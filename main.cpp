@@ -13,6 +13,11 @@ int Generate_Memory_Block(int Memory_Block_Table) {
     return Memory_Block_Table;
 }
 
+int * PCB(){
+    int * PCB = rand();
+    return PCB;
+}
+
 int main() {
     std::cout << "Hello, World!" << std::endl;
     int Memory_Block_Table = 512 - 32;
@@ -26,6 +31,7 @@ int main() {
         if (user_input_number == 1){
             Memory_Block_Table = Generate_Memory_Block(Memory_Block_Table);
             cout << Memory_Block_Table << " Total Block remaining" << endl;
+            cout << PCB() << " PCB" << endl;
         }
 
         else {
