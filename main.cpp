@@ -2,20 +2,36 @@
 
 using namespace std;
 
-int * Initiate(int generate_memory_block) {
+int PID = 0;
 
+int * Initiate(int generate_memory_block) {
+    int GMB = generate_memory_block;
     //b and c
     int * PCB;
     PCB = new int[4];
-    PCB[0] = rand();
+
+    //PID, unique process ID
+    ::PID = ::PID + 1;
+    PCB[0] = PID;
 
     PCB[1] = 5; //default size, accomplish not related to assignment
 
     int *PageTable;
-    PageTable = new int[generate_memory_block];
+    PageTable = new int[GMB];
+    //Attempt to create a page table with usage of generated memory block
+    PCB[2] = GMB;
+    return PCB; //Store it into readyqueue
+}
 
-    PCB[2] = *PageTable;
-    return PCB;
+void PrintSystem(int Memory_Block_Table, int * Process_Control_Block){
+    int MBT = Memory_Block_Table;
+    int * PCB = Process_Control_Block;
+    cout << MBT << " Total Block remaining" << endl;
+    cout << PCB[0] << " PID " << PCB[1] << " Size " << PCB[2] << " Page Table" << endl;
+}
+
+void Terminate(){
+
 }
 
 int main() {
@@ -25,7 +41,10 @@ int main() {
 
     int user_input_number = 0;
 
-    while (user_input_number != 5){
+    int * PCB = nullptr;
+    int ** ReadyQueue;
+    bool exit = false;
+    while (!exit){
         cout << "Select menu " << endl;
         cin >> user_input_number;
         if (user_input_number == 1){
@@ -39,16 +58,30 @@ int main() {
             }
 
             //generate PCB
-            int * PCB = Initiate(generate_memory_block);
-            cout << Memory_Block_Table << " Total Block remaining" << endl;
-            cout << PCB[0] << " " << PCB[1] << " " << PCB[2] << " PCB" << endl;
+            PCB = Initiate(generate_memory_block);
+            ReadyQueue = &PCB; //Attempt to create another array to store pointer array
+            //cout << Memory_Block_Table << " Total Block remaining" << endl;
+            //cout << PCB[0] << " " << PCB[1] << " " << PCB[2] << " PCB" << endl;
+            //cout << ReadyQueue << " ReadyQueue" << endl;
         }
 
-        if (user_input_number == 2){
-            for (int n = 0; n < 10000; n++){
-                cout << rand() % (120 - 25 + 1) + 25 << endl;
+        else if (user_input_number == 2){
+            PrintSystem(Memory_Block_Table, PCB); //Print function
+        }
+
+        else if (user_input_number == 3){
+            Terminate(); //Terminate function
+        }
+
+        else if (user_input_number == 4){
+            cout << "Are you sure you want to exit the program? [Press 5 to exit]" << endl;
+            cin >> user_input_number;
+            if (user_input_number == 5){
+                exit = true;
             }
-            cout << endl;
+            else{
+                cout << "You are continuing the program" << endl;
+            }
         }
 
         else {
